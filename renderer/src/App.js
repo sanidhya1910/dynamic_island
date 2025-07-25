@@ -2,25 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import axios from 'axios';
 import './App.css';
+
 import { 
-  WiCloudy, WiDaySunny, WiNightClear, WiRain, WiSnow, WiThunderstorm,
-  WiDayThunderstorm, WiNightThunderstorm, WiCloud, WiCloudy as WiCloudyIcon
-} from 'react-icons/wi';
-import { 
-  MdAccessTime, MdNotifications, MdMusicNote, MdBattery90, MdBatteryFull, 
-  MdBattery60, MdBattery30, MdBatteryAlert, MdWifi, MdSignalWifi4Bar,
-  MdVolumeUp, MdVolumeOff, MdExpandMore, MdExpandLess, MdSettings
-} from 'react-icons/md';
-import { 
-  FaStepBackward, FaStepForward, FaPlay, FaPause, FaRandom, FaRedoAlt,
-  FaVolumeUp, FaVolumeDown, FaMicrophone
-} from 'react-icons/fa';
-import { 
-  HiCpuChip, HiMemory 
-} from 'react-icons/hi2';
-import { 
-  RiNetworkLine 
-} from 'react-icons/ri';
+  Cloud, Sun, CloudRain, CloudSnow, Zap, CloudDrizzle,
+  Clock, Bell, Music, Battery, BatteryLow, Wifi, WifiOff,
+  Volume2, VolumeX, ChevronDown, ChevronUp, Settings,
+  SkipBack, SkipForward, Play, Pause, Shuffle, Repeat,
+  Mic, Cpu, HardDrive, Activity
+} from 'lucide-react';
 
 function App() {
   const islandRef = useRef(null);
@@ -29,7 +18,7 @@ function App() {
   const [time, setTime] = useState(new Date());
   const [notification, setNotification] = useState(null);
   const [weather, setWeather] = useState('');
-  const [weatherIcon, setWeatherIcon] = useState(WiCloudy);
+  const [weatherIcon, setWeatherIcon] = useState(<Cloud />);
   const [temperature, setTemperature] = useState('');
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
@@ -45,26 +34,23 @@ function App() {
   const getWeatherIcon = (description, isDay = true) => {
     const desc = description.toLowerCase();
     if (desc.includes('sunny') || desc.includes('clear')) {
-      return isDay ? WiDaySunny : WiNightClear;
+      return <Sun className="weather-icon" />;
     } else if (desc.includes('rain') || desc.includes('drizzle')) {
-      return WiRain;
+      return <CloudRain className="weather-icon" />;
     } else if (desc.includes('thunder') || desc.includes('storm')) {
-      return isDay ? WiDayThunderstorm : WiNightThunderstorm;
+      return <Zap className="weather-icon" />;
     } else if (desc.includes('snow')) {
-      return WiSnow;
+      return <CloudSnow className="weather-icon" />;
     } else if (desc.includes('cloud')) {
-      return WiCloud;
+      return <Cloud className="weather-icon" />;
     }
-    return WiCloudy;
+    return <Cloud className="weather-icon" />;
   };
 
   // Battery icon based on level
   const getBatteryIcon = () => {
-    if (batteryLevel > 90) return MdBatteryFull;
-    if (batteryLevel > 60) return MdBattery90;
-    if (batteryLevel > 30) return MdBattery60;
-    if (batteryLevel > 15) return MdBattery30;
-    return MdBatteryAlert;
+    if (batteryLevel <= 15) return BatteryLow;
+    return Battery;
   };
 
   useEffect(() => {
@@ -259,7 +245,7 @@ function App() {
       <div className="status-bar">
         <div className="left-status">
           <span className="time-section">
-            <MdAccessTime className="icon" />
+            <Clock className="icon" size={16} />
             <div className="time-info">
               <div className="time">{time.toLocaleTimeString()}</div>
               <div className="date">{formatDate(currentDate)}</div>
@@ -269,22 +255,22 @@ function App() {
         
         <div className="center-status" onClick={toggleExpanded}>
           <span className="weather-section">
-            <weatherIcon className="weather-icon" />
+            <span className="weather-icon">{weatherIcon}</span>
             <span>{temperature}</span>
           </span>
-          {isExpanded ? <MdExpandLess className="expand-icon" /> : <MdExpandMore className="expand-icon" />}
+          {isExpanded ? <ChevronUp className="expand-icon" size={16} /> : <ChevronDown className="expand-icon" size={16} />}
         </div>
 
         <div className="right-status">
           <span className="battery-section">
-            <BatteryIcon className={`battery-icon ${batteryLevel <= 15 ? 'low-battery' : ''} ${isCharging ? 'charging' : ''}`} />
+            <BatteryIcon className={`battery-icon ${batteryLevel <= 15 ? 'low-battery' : ''} ${isCharging ? 'charging' : ''}`} size={18} />
             <span className="battery-text">{batteryLevel}%</span>
           </span>
           <span className="network-section">
             {isOnline ? (
-              <MdSignalWifi4Bar className="network-icon online" />
+              <Wifi className="network-icon online" size={16} />
             ) : (
-              <MdWifi className="network-icon offline" />
+              <WifiOff className="network-icon offline" size={16} />
             )}
           </span>
         </div>
@@ -294,7 +280,7 @@ function App() {
       {track && (
         <div className="music-section">
           <div className="track-info">
-            <MdMusicNote className="music-icon" />
+            <Music className="music-icon" size={18} />
             <div className="track-details">
               <div className="track-title">{track.title}</div>
               <div className="track-artist">{track.artist}</div>
@@ -303,13 +289,13 @@ function App() {
           
           <div className="music-controls">
             <button className="control-btn" onClick={() => handleControl('prev')}>
-              <FaStepBackward />
+              <SkipBack size={12} />
             </button>
             <button className="control-btn main-control" onClick={() => handleControl('play')}>
-              {isPlaying ? <FaPause /> : <FaPlay />}
+              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
             </button>
             <button className="control-btn" onClick={() => handleControl('next')}>
-              <FaStepForward />
+              <SkipForward size={12} />
             </button>
           </div>
         </div>
@@ -321,7 +307,7 @@ function App() {
           {/* System Stats */}
           <div className="system-stats">
             <div className="stat-item">
-              <HiCpuChip className="stat-icon" />
+              <Cpu className="stat-icon" size={18} />
               <div className="stat-info">
                 <div className="stat-label">CPU</div>
                 <div className="stat-value">{systemStats.cpu}%</div>
@@ -335,7 +321,7 @@ function App() {
             </div>
             
             <div className="stat-item">
-              <HiMemory className="stat-icon" />
+              <HardDrive className="stat-icon" size={18} />
               <div className="stat-info">
                 <div className="stat-label">Memory</div>
                 <div className="stat-value">{systemStats.memory}%</div>
@@ -349,7 +335,7 @@ function App() {
             </div>
             
             <div className="stat-item">
-              <RiNetworkLine className="stat-icon" />
+              <Activity className="stat-icon" size={18} />
               <div className="stat-info">
                 <div className="stat-label">Network</div>
                 <div className="stat-value">{systemStats.network} KB/s</div>
@@ -366,15 +352,15 @@ function App() {
           {/* Quick Actions */}
           <div className="quick-actions">
             <button className="quick-action-btn" onClick={() => handleQuickAction('settings')}>
-              <MdSettings />
+              <Settings size={16} />
               <span>Settings</span>
             </button>
             <button className="quick-action-btn" onClick={() => handleQuickAction('volume')}>
-              <FaVolumeUp />
+              <Volume2 size={16} />
               <span>Volume</span>
             </button>
             <button className="quick-action-btn" onClick={() => handleQuickAction('microphone')}>
-              <FaMicrophone />
+              <Mic size={16} />
               <span>Mic</span>
             </button>
           </div>
@@ -386,7 +372,7 @@ function App() {
               <div className="notifications-list">
                 {notifications.slice(0, 3).map(notif => (
                   <div key={notif.id} className="notification-item">
-                    <MdNotifications className="notif-icon" />
+                    <Bell className="notif-icon" size={14} />
                     <div className="notif-content">
                       <div className="notif-message">{notif.message}</div>
                       <div className="notif-time">
@@ -404,7 +390,7 @@ function App() {
       {/* Active Notification Popup */}
       {notification && (
         <div className="notification-popup">
-          <MdNotifications className="popup-icon" />
+          <Bell className="popup-icon" size={16} />
           <span className="popup-text">{notification}</span>
         </div>
       )}

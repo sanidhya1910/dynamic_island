@@ -1,0 +1,258 @@
+/* CSS-only Icons */
+.css-icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  position: relative;
+  color: currentColor;
+}
+
+/* Clock Icon */
+.css-icon-clock::before {
+  content: '🕐';
+}
+
+/* Chevron Icons */
+.css-icon-chevron-up::before {
+  content: '⌃';
+}
+
+.css-icon-chevron-down::before {
+  content: '⌄';
+}
+
+/* Battery Icons */
+.css-icon-battery::before {
+  content: '🔋';
+}
+
+.css-icon-battery-low::before {
+  content: '🪫';
+}
+
+/* WiFi Icons */
+.css-icon-wifi::before {
+  content: '📶';
+}
+
+.css-icon-wifi-off::before {
+  content: '📵';
+}
+
+/* Music Icons */
+.css-icon-music::before {
+  content: '🎵';
+}
+
+.css-icon-play::before {
+  content: '▶️';
+}
+
+.css-icon-pause::before {
+  content: '⏸️';
+}
+
+.css-icon-skip-back::before {
+  content: '⏮️';
+}
+
+.css-icon-skip-forward::before {
+  content: '⏭️';
+}
+
+/* System Icons */
+.css-icon-cpu::before {
+  content: '💻';
+}
+
+.css-icon-memory::before {
+  content: '💾';
+}
+
+.css-icon-activity::before {
+  content: '📊';
+}
+
+/* Action Icons */
+.css-icon-settings::before {
+  content: '⚙️';
+}
+
+.css-icon-volume::before {
+  content: '🔊';
+}
+
+.css-icon-mic::before {
+  content: '🎙️';
+}
+
+.css-icon-bell::before {
+  content: '🔔';
+}
+
+/* Alternative CSS shapes for more modern look */
+.css-icon-shape {
+  border-radius: 2px;
+  background: currentColor;
+}
+
+/* Clock as CSS shape */
+.css-icon-clock-shape {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+
+.css-icon-clock-shape::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  width: 1px;
+  height: 30%;
+  background: currentColor;
+  transform-origin: bottom;
+  transform: translateX(-50%);
+}
+
+.css-icon-clock-shape::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 1px;
+  height: 20%;
+  background: currentColor;
+  transform-origin: bottom;
+  transform: translateX(-50%) rotate(90deg);
+}
+
+/* Play button as CSS triangle */
+.css-icon-play-shape {
+  width: 0;
+  height: 0;
+  border-left: 0.6em solid currentColor;
+  border-top: 0.4em solid transparent;
+  border-bottom: 0.4em solid transparent;
+  margin-left: 0.2em;
+}
+
+/* Pause button as CSS bars */
+.css-icon-pause-shape {
+  display: flex;
+  gap: 0.2em;
+}
+
+.css-icon-pause-shape::before,
+.css-icon-pause-shape::after {
+  content: '';
+  width: 0.2em;
+  height: 0.8em;
+  background: currentColor;
+}
+
+/* Battery as CSS shape */
+.css-icon-battery-shape {
+  width: 0.8em;
+  height: 0.4em;
+  border: 1px solid currentColor;
+  border-radius: 1px;
+  position: relative;
+}
+
+.css-icon-battery-shape::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 25%;
+  width: 2px;
+  height: 50%;
+  background: currentColor;
+  border-radius: 0 1px 1px 0;
+}
+
+/* WiFi as CSS arcs */
+.css-icon-wifi-shape {
+  position: relative;
+  width: 1em;
+  height: 0.8em;
+}
+
+.css-icon-wifi-shape::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0.2em;
+  height: 0.2em;
+  background: currentColor;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.css-icon-wifi-shape::after {
+  content: '';
+  position: absolute;
+  bottom: 0.1em;
+  left: 50%;
+  width: 0.6em;
+  height: 0.6em;
+  border: 2px solid currentColor;
+  border-bottom: none;
+  border-radius: 0.6em 0.6em 0 0;
+  transform: translateX(-50%);
+}
+
+/* Settings gear */
+.css-icon-settings-shape {
+  width: 0.8em;
+  height: 0.8em;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  position: relative;
+}
+
+.css-icon-settings-shape::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.3em;
+  height: 0.3em;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Volume speaker */
+.css-icon-volume-shape {
+  position: relative;
+  width: 0.4em;
+  height: 0.6em;
+  background: currentColor;
+}
+
+.css-icon-volume-shape::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 0.3em solid currentColor;
+  border-top: 0.3em solid transparent;
+  border-bottom: 0.3em solid transparent;
+}
+
+.css-icon-volume-shape::after {
+  content: '';
+  position: absolute;
+  right: -0.4em;
+  top: 50%;
+  width: 0.4em;
+  height: 0.4em;
+  border: 1px solid currentColor;
+  border-left: none;
+  border-radius: 0 0.4em 0.4em 0;
+  transform: translateY(-50%);
+}
