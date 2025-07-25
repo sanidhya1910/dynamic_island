@@ -6,23 +6,40 @@ const os = require('os');
 
 function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
-  const { width } = primaryDisplay.workAreaSize;
+  const { width, height } = primaryDisplay.workAreaSize;
 
   const win = new BrowserWindow({
     width: 520,
-    height: 200,
+    height: 80, // Start with compact height
     x: Math.floor((width - 520) / 2),
-    y: 30,
+    y: 10, // Closer to top, more iOS-like
     frame: false,
     transparent: true,
     alwaysOnTop: true,
     skipTaskbar: true,
     resizable: false,
+    hasShadow: false, // Remove shadow for sleeker look
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
     },
+  });
+
+  // Handle window resizing when expanding/collapsing
+  ipcMain.on('resize-window', (event, { width: newWidth, height: newHeight, expanded }) => {
+    const currentBounds = win.getBounds();
+    const screenWidth = primaryDisplay.workAreaSize.width;
+    
+    // Calculate new position to keep centered
+    const newX = Math.floor((screenWidth - newWidth) / 2);
+    
+    win.setBounds({
+      x: newX,
+      y: expanded ? 10 : 10, // Keep same Y position
+      width: newWidth,
+      height: newHeight
+    }, true);
   });
 
   const REACT_DEV_URL = 'http://localhost:3000';

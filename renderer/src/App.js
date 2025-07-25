@@ -179,6 +179,24 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  // Handle window resizing when track changes
+  useEffect(() => {
+    if (window.electronAPI && islandRef.current) {
+      setTimeout(() => {
+        const rect = islandRef.current.getBoundingClientRect();
+        const padding = 20;
+        
+        const dimensions = {
+          width: Math.max(520, Math.min(rect.width + padding, 600)),
+          height: Math.max(isExpanded ? 120 : 80, rect.height + padding),
+          expanded: isExpanded
+        };
+        
+        window.electronAPI.resizeWindow(dimensions);
+      }, 100);
+    }
+  }, [track, isExpanded]);
+
   const handleControl = (action) => {
     if (window.electronAPI) {
       window.electronAPI.controlPlayback(action);
@@ -189,19 +207,36 @@ function App() {
   };
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+    const newExpanded = !isExpanded;
+    setIsExpanded(newExpanded);
     
-    if (!isExpanded) {
+    // Calculate window dimensions based on content
+    if (window.electronAPI) {
+      setTimeout(() => {
+        const islandElement = islandRef.current;
+        if (islandElement) {
+          const rect = islandElement.getBoundingClientRect();
+          const padding = 20; // Reduced padding for tighter fit
+          
+          const dimensions = {
+            width: Math.max(520, Math.min(rect.width + padding, 600)), // Max width cap
+            height: Math.max(newExpanded ? 120 : 80, rect.height + padding),
+            expanded: newExpanded
+          };
+          
+          window.electronAPI.resizeWindow(dimensions);
+        }
+      }, 150); // Slightly longer delay for smoother animation
+    }
+    
+    // Animate the expansion
+    if (newExpanded) {
       gsap.to(islandRef.current, {
-        height: 'auto',
-        duration: 0.3,
-        ease: 'power2.out'
-      });
-    } else {
-      gsap.to(islandRef.current, {
-        height: 'auto',
-        duration: 0.3,
-        ease: 'power2.out'
+        scale: 1.02,
+        duration: 0.2,
+        ease: 'power2.out',
+        yoyo: true,
+        repeat: 1
       });
     }
   };

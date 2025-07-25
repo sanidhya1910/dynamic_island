@@ -9,4 +9,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onVolumeInfo: (callback) => ipcRenderer.on('volume-info', (event, data) => callback(data)),
   requestWeather: () => ipcRenderer.send('request-weather'),
   triggerNotification: (message) => ipcRenderer.send('trigger-notification', message),
+  resizeWindow: (dimensions) => ipcRenderer.send('resize-window', dimensions),
 });
