@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.island {
+  background: rgba(30, 30, 30, 0.35);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(24px) saturate(160%);
+  width: 440px;
+  height: auto;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.top-line, .music-line {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-line {
+  margin-top: 4px;
+  align-items: center;
+  width: 100%;
+}
+
+.track {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+}
+
+.controls {
+  display: flex;
+  gap: 4px;
+}
+
+.controls button {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 6px;
+  padding: 2px 6px;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+}
+
+.notification-popup {
+  margin-top: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 10px;
+  animation: popIn 0.3s ease-out;
+  font-size: 13px;
+  width: 100%;
+  text-align: center;
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
