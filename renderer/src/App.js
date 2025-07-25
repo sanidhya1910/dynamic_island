@@ -8,7 +8,7 @@ import {
   Clock, Bell, Music, Battery, BatteryLow, Wifi, WifiOff,
   Volume2, VolumeX, ChevronDown, ChevronUp, Settings,
   SkipBack, SkipForward, Play, Pause, Shuffle, Repeat,
-  Mic, Cpu, HardDrive, Activity
+  Mic
 } from 'lucide-react';
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
   const [temperature, setTemperature] = useState('');
   const [batteryLevel, setBatteryLevel] = useState(100);
   const [isCharging, setIsCharging] = useState(false);
-  const [systemStats, setSystemStats] = useState({ cpu: 0, memory: 0, network: 0 });
   const [isExpanded, setIsExpanded] = useState(false);
   const [volume, setVolume] = useState(50);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -88,15 +87,6 @@ function App() {
         setTimeout(() => setNotification(null), 4000);
       });
 
-      window.electronAPI.onSystemStats((data) => {
-        setSystemStats(data);
-      });
-
-      window.electronAPI.onBatteryInfo((data) => {
-        setBatteryLevel(data.level);
-        setIsCharging(data.charging);
-      });
-
       window.electronAPI.onVolumeInfo((data) => {
         setVolume(data);
       });
@@ -158,24 +148,6 @@ function App() {
     
     fetchWeather();
     const interval = setInterval(fetchWeather, 600000); // 10 minutes
-    return () => clearInterval(interval);
-  }, []);
-
-  // System stats simulation (in real app, this would come from Electron main process)
-  useEffect(() => {
-    const updateStats = () => {
-      // If electron API is not available, use mock data
-      if (!window.electronAPI) {
-        setSystemStats({
-          cpu: Math.floor(Math.random() * 100),
-          memory: Math.floor(Math.random() * 100),
-          network: Math.floor(Math.random() * 1000)
-        });
-      }
-    };
-    
-    updateStats();
-    const interval = setInterval(updateStats, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -275,7 +247,10 @@ function App() {
   const BatteryIcon = getBatteryIcon();
 
   return (
-    <div ref={islandRef} className={`island ${isExpanded ? 'expanded' : ''}`}>
+    <div 
+      ref={islandRef} 
+      className={`island ${isExpanded ? 'expanded' : ''}`}
+    >
       {/* Main Status Bar */}
       <div className="status-bar">
         <div className="left-status">
@@ -339,51 +314,6 @@ function App() {
       {/* Expanded View */}
       {isExpanded && (
         <div className="expanded-content">
-          {/* System Stats */}
-          <div className="system-stats">
-            <div className="stat-item">
-              <Cpu className="stat-icon" size={18} />
-              <div className="stat-info">
-                <div className="stat-label">CPU</div>
-                <div className="stat-value">{systemStats.cpu}%</div>
-                <div className="stat-bar">
-                  <div 
-                    className="stat-fill cpu" 
-                    style={{width: `${systemStats.cpu}%`}}
-                  ></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="stat-item">
-              <HardDrive className="stat-icon" size={18} />
-              <div className="stat-info">
-                <div className="stat-label">Memory</div>
-                <div className="stat-value">{systemStats.memory}%</div>
-                <div className="stat-bar">
-                  <div 
-                    className="stat-fill memory" 
-                    style={{width: `${systemStats.memory}%`}}
-                  ></div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="stat-item">
-              <Activity className="stat-icon" size={18} />
-              <div className="stat-info">
-                <div className="stat-label">Network</div>
-                <div className="stat-value">{systemStats.network} KB/s</div>
-                <div className="stat-bar">
-                  <div 
-                    className="stat-fill network" 
-                    style={{width: `${Math.min(systemStats.network / 10, 100)}%`}}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Quick Actions */}
           <div className="quick-actions">
             <button className="quick-action-btn" onClick={() => handleQuickAction('settings')}>
